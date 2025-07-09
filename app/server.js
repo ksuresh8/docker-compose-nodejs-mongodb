@@ -18,7 +18,8 @@ app.get('/', function (req, res) {
   });
 
 // when starting app locally, use "mongodb://admin:password@localhost:27017" URL instead
-let mongoUrlDockerCompose = `mongodb://${DB_USER}:${DB_PASS}@mongodb`;
+//let mongoUrlDockerCompose = `mongodb://${DB_USER}:${DB_PASS}@mongodb`;
+let mongoUrlDockerCompose = "mongodb://admin:secret@localhost:27017";
 
 // pass these options to mongo client connect request to avoid DeprecationWarning for current Server Discovery and Monitoring engine
 let mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -30,6 +31,7 @@ let collectionName = "my-collection";
 app.get('/fetch-data', function (req, res) {
   let response = {};
   MongoClient.connect(mongoUrlDockerCompose, mongoClientOptions, function (err, client) {
+
     if (err) throw err;
 
     let db = client.db(databaseName);
@@ -42,7 +44,7 @@ app.get('/fetch-data', function (req, res) {
       client.close();
 
       // Send response
-      res.send(response ? response : {});
+      res.send(result ? result : {});
     });
   });
 });
